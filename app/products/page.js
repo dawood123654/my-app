@@ -5,10 +5,26 @@ import { OrbitControls, Sphere, Text } from '@react-three/drei'
 import { useRef, useState } from 'react'
 
 const projects = [
-  { id: 1, title: 'الاسم', description: 'Dawod Mohammed – مطور واجهات أمامية مهتم بالتصميم التفاعلي.' },
-  { id: 2, title: 'الخبرات', description: 'خريج جامعة NBU، عملت على عدة مشاريع ويب باستخدام React و Next.js.' },
-  { id: 3, title: 'المهارات', description: 'HTML, CSS, JavaScript, React, Next.js, Three.js, Tailwind' },
-  { id: 4, title: 'الهوايات', description: 'تصميم ثلاثي الأبعاد، الذكاء الاصطناعي، قراءة التقنية.' },
+  {
+    id: 1,
+    title: 'الاسم',
+    description: 'Dawod Mohammed – مطور واجهات أمامية مهتم بالتصميم التفاعلي.',
+  },
+  {
+    id: 2,
+    title: 'الخبرات',
+    description: 'خريج جامعة NBU، عملت على عدة مشاريع ويب باستخدام React و Next.js.',
+  },
+  {
+    id: 3,
+    title: 'المهارات',
+    description: 'HTML, CSS, JavaScript, React, Next.js, Three.js, Tailwind',
+  },
+  {
+    id: 4,
+    title: 'الهوايات',
+    description: 'تصميم ثلاثي الأبعاد، الذكاء الاصطناعي، قراءة التقنية.',
+  },
 ]
 
 function ProjectCard({ project, position, onClick }) {
@@ -58,6 +74,7 @@ function RotatingCards({ onCardClick }) {
         const angle = i * angleStep
         const x = Math.cos(angle) * radius
         const z = Math.sin(angle) * radius
+
         return (
           <ProjectCard
             key={p.id}
@@ -109,24 +126,26 @@ export default function Products() {
 
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center relative">
+     
       <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
         Portfolio
       </h1>
 
+   
       <div className="w-full max-w-6xl h-[600px] sm:h-[500px] xs:h-[400px]">
         <Canvas shadows camera={{ position: [0, 3, 10], fov: 50 }}>
           <ambientLight intensity={0.3} />
           <pointLight position={[10, 10, 10]} intensity={1} />
           <OrbitControls />
 
-          {/* الكرة والنص داخلها */}
+        
           <group position={[0, 0, 0]}>
             <Sphere args={[1.5, 64, 64]}>
               <meshStandardMaterial color="yellow" />
             </Sphere>
 
             <Text
-              position={[0, 0, 0.4]} // تقديم النص للأمام داخل الكرة
+              position={[0, 0, 0.4]}
               fontSize={0.25}
               color="white"
               anchorX="center"
@@ -140,10 +159,12 @@ export default function Products() {
         </Canvas>
       </div>
 
+     
       <Modal project={selectedProject} onClose={closeModal} />
 
+    
       <section className="w-full max-w-3xl text-center mt-12 px-4 sm:px-8">
-        <h2 className="text-2xl font-bold mb-4 text-white"> من أنا؟</h2>
+        <h2 className="text-2xl font-bold mb-4 text-white">من أنا؟</h2>
         <p className="text-gray-300 mb-2">
           أنا داود محمد، مطور واجهات أمامية أهوى بناء تجارب تفاعلية وواجهات جذابة.
         </p>
@@ -159,6 +180,7 @@ export default function Products() {
         </div>
       </section>
 
+     
       <footer className="mt-10 text-gray-400 text-sm pb-6">
         &copy; {new Date().getFullYear()} Dawod Mohammed. جميع الحقوق محفوظة.
       </footer>
