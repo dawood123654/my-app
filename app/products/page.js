@@ -132,7 +132,7 @@ export default function Products() {
               anchorX="center"
               anchorY="middle"
             >
-              أهلاً بك
+              surprise
             </Text>
           </group>
 
