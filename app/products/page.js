@@ -30,7 +30,7 @@ function ProjectCard({ project, position, onClick }) {
 
       <Text
         position={[0, 0, 0.15]}
-        fontSize={0.2} // أصغر قليلاً للجوال
+        fontSize={0.2}
         color="white"
         anchorX="center"
         anchorY="middle"
@@ -118,9 +118,24 @@ export default function Home() {
           <ambientLight intensity={0.3} />
           <pointLight position={[10, 10, 10]} intensity={1} />
           <OrbitControls />
-          <Sphere args={[1.5, 64, 64]} position={[0, 0, 0]}>
-            <meshStandardMaterial color="yellow" />
-          </Sphere>
+
+        
+          <group position={[0, 0, 0]}>
+            <Sphere args={[1.5, 64, 64]}>
+              <meshStandardMaterial color="yellow" />
+            </Sphere>
+
+            <Text
+              position={[0, 0, 1.6]}
+              fontSize={0.3}
+              color="black"
+              anchorX="center"
+              anchorY="middle"
+            >
+              أهلاً بك
+            </Text>
+          </group>
+
           <RotatingCards onCardClick={handleCardClick} />
         </Canvas>
       </div>
@@ -140,8 +155,7 @@ export default function Home() {
         </p>
 
         <div className="flex flex-wrap justify-center gap-6 text-orange-400 font-medium mt-4">
-         
-           <a href="dawodalkhazal2233@gmail.com">Email</a>
+          <a href="mailto:dawodalkhazal2233@gmail.com">Email</a>
         </div>
       </section>
 
@@ -151,4 +165,3 @@ export default function Home() {
     </main>
   )
 }
-
