@@ -17,14 +17,14 @@ export default function Products() {
         }
       `}</style>
 
-      {/* شريط الإشعار العلوي */}
+    
       <div className="fixed top-0 left-0 w-full h-8 bg-[#bfa982] z-50 flex items-center overflow-hidden">
         <div className="inline-block whitespace-nowrap pl-full animate-marquee font-semibold text-[#4b3e2e] text-base">
           معنا نحو الإبداع
         </div>
       </div>
 
-      {/* الهيدر */}
+    
       <header className="sticky top-8 z-40 flex justify-between items-center bg-[#d9c8b4] px-5 py-3 text-[#4b3e2c] font-bold">
         <Link href="/products" className="hover:underline">
           الصفحة الرئيسية
@@ -36,7 +36,7 @@ export default function Products() {
         />
       </header>
 
-      {/* محتوى المنتجات */}
+     
       <div className="max-w-5xl mx-auto mt-32 px-4 text-center font-sans">
         <h2 className="text-2xl mb-8 font-bold">أهلاً وسهلاً بك في متجر معلقات</h2>
 
@@ -57,7 +57,7 @@ export default function Products() {
         </div>
       </div>
 
-      {/* كلاس الحركة */}
+      
       <style jsx global>{`
         .animate-marquee {
           animation: marquee 25s linear infinite;
