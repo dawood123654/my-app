@@ -119,15 +119,14 @@ export default function Home() {
           <pointLight position={[10, 10, 10]} intensity={1} />
           <OrbitControls />
 
-        
           <group position={[0, 0, 0]}>
             <Sphere args={[1.5, 64, 64]}>
               <meshStandardMaterial color="yellow" />
             </Sphere>
 
             <Text
-              position={[0, 0, 1.6]}
-              fontSize={0.3}
+              position={[0, 0, 0]}    
+              fontSize={0.25}
               color="black"
               anchorX="center"
               anchorY="middle"
