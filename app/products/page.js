@@ -5,7 +5,7 @@ import { OrbitControls, Sphere, Text } from '@react-three/drei'
 import { useRef, useState } from 'react'
 
 const projects = [
-  { id: 1, title: 'الاسم', description: ' – مطور واجهات أمامية مهتم بالتصميم التفاعلي.' },
+  { id: 1, title: 'الاسم', description: 'Dawod Mohammed – مطور واجهات أمامية مهتم بالتصميم التفاعلي.' },
   { id: 2, title: 'الخبرات', description: 'خريج جامعة NBU، عملت على عدة مشاريع ويب باستخدام React و Next.js.' },
   { id: 3, title: 'المهارات', description: 'HTML, CSS, JavaScript, React, Next.js, Three.js, Tailwind' },
   { id: 4, title: 'الهوايات', description: 'تصميم ثلاثي الأبعاد، الذكاء الاصطناعي، قراءة التقنية.' },
@@ -96,7 +96,7 @@ function Modal({ project, onClose }) {
   )
 }
 
-export default function products() {
+export default function Products() {
   const [selectedProject, setSelectedProject] = useState(null)
 
   const handleCardClick = (project) => {
@@ -119,15 +119,16 @@ export default function products() {
           <pointLight position={[10, 10, 10]} intensity={1} />
           <OrbitControls />
 
+          {/* الكرة والنص داخلها */}
           <group position={[0, 0, 0]}>
             <Sphere args={[1.5, 64, 64]}>
               <meshStandardMaterial color="yellow" />
             </Sphere>
 
             <Text
-              position={[0, 0, 0]}    
+              position={[0, 0, 0.4]} // تقديم النص للأمام داخل الكرة
               fontSize={0.25}
-              color="black"
+              color="white"
               anchorX="center"
               anchorY="middle"
             >
