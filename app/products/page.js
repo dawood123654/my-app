@@ -8,22 +8,22 @@ const projects = [
   {
     id: 1,
     title: 'الاسم',
-    description: 'Dawod Mohammed – مطور واجهات أمامية مهتم بالتصميم التفاعلي.',
+    description: 'داود محمد – مطور واجهات أمامية شغوف ببناء تجارب تفاعلية وتصاميم جذابة.',
   },
   {
     id: 2,
     title: 'الخبرات',
-    description: 'خريج جامعة NBU، عملت على عدة مشاريع ويب باستخدام React و Next.js.',
+    description: 'خريج جامعة NBU، عملت على مشاريع ويب متنوعة باستخدام React و Next.js.',
   },
   {
     id: 3,
     title: 'المهارات',
-    description: 'HTML, CSS, JavaScript, React, Next.js, Three.js, Tailwind',
+    description: 'HTML، CSS، JavaScript، React، Next.js، Three.js، Tailwind CSS.',
   },
   {
     id: 4,
     title: 'الهوايات',
-    description: 'تصميم ثلاثي الأبعاد، الذكاء الاصطناعي، قراءة التقنية.',
+    description: 'تصميم ثلاثي الأبعاد، الذكاء الاصطناعي، متابعة أخبار التقنية وقراءتها.',
   },
 ]
 
@@ -126,19 +126,16 @@ export default function Products() {
 
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center relative">
-     
       <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
         Portfolio
       </h1>
 
-   
       <div className="w-full max-w-6xl h-[600px] sm:h-[500px] xs:h-[400px]">
         <Canvas shadows camera={{ position: [0, 3, 10], fov: 50 }}>
           <ambientLight intensity={0.3} />
           <pointLight position={[10, 10, 10]} intensity={1} />
           <OrbitControls />
 
-        
           <group position={[0, 0, 0]}>
             <Sphere args={[1.5, 64, 64]}>
               <meshStandardMaterial color="yellow" />
@@ -151,7 +148,7 @@ export default function Products() {
               anchorX="center"
               anchorY="middle"
             >
-              surprise
+              مرحبًا بك
             </Text>
           </group>
 
@@ -159,20 +156,18 @@ export default function Products() {
         </Canvas>
       </div>
 
-     
       <Modal project={selectedProject} onClose={closeModal} />
 
-    
       <section className="w-full max-w-3xl text-center mt-12 px-4 sm:px-8">
         <h2 className="text-2xl font-bold mb-4 text-white">من أنا؟</h2>
         <p className="text-gray-300 mb-2">
-          أنا داود محمد، مطور واجهات أمامية أهوى بناء تجارب تفاعلية وواجهات جذابة.
+          أنا <strong>داود محمد</strong>، مطور واجهات أمامية شغوف ببناء تجارب تفاعلية وواجهات استخدام جذابة.
         </p>
         <p className="text-gray-300 mb-2">
-          أعمل باستخدام تقنيات حديثة مثل React, Next.js, و Three.js لصناعة مواقع مستقبلية.
+          أستخدم تقنيات حديثة مثل <strong>React</strong>، <strong>Next.js</strong>، و<strong>Three.js</strong> لصناعة مواقع عصرية تواكب المستقبل.
         </p>
         <p className="text-gray-300 mb-4">
-          أطمح إلى الدمج بين الإبداع البصري والتقنيات العملية لبناء مشاريع مميزة.
+          أطمح إلى الجمع بين الإبداع البصري والبرمجة العملية لبناء مشاريع مميزة تقدم تجربة استخدام فريدة.
         </p>
 
         <div className="flex flex-wrap justify-center gap-6 text-orange-400 font-medium mt-4">
@@ -180,7 +175,6 @@ export default function Products() {
         </div>
       </section>
 
-     
       <footer className="mt-10 text-gray-400 text-sm pb-6">
         &copy; {new Date().getFullYear()} Dawod Mohammed. جميع الحقوق محفوظة.
       </footer>
