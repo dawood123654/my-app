@@ -96,7 +96,7 @@ function Modal({ project, onClose }) {
   )
 }
 
-export default function Home() {
+export default function products() {
   const [selectedProject, setSelectedProject] = useState(null)
 
   const handleCardClick = (project) => {
