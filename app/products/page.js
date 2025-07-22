@@ -1,6 +1,6 @@
 'use client'
 
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Sphere, Text } from '@react-three/drei'
 import { useRef, useState } from 'react'
 
@@ -44,10 +44,10 @@ function ProjectCard({ project, position, onClick }) {
         <meshStandardMaterial color={hovered ? 'orange' : 'royalblue'} />
       </mesh>
 
-      {/* Text on the back side of the box */}
+      {/* Title on back side */}
       <Text
         position={[0, 0, -0.11]}
-        rotation={[0, Math.PI, 0]} // 180 degrees to show from back
+        rotation={[0, Math.PI, 0]}
         fontSize={0.2}
         color="white"
         anchorX="center"
@@ -59,19 +59,12 @@ function ProjectCard({ project, position, onClick }) {
   )
 }
 
-function RotatingCards({ onCardClick }) {
-  const groupRef = useRef()
-
-  useFrame(({ clock }) => {
-    const elapsed = clock.getElapsedTime()
-    groupRef.current.rotation.y = elapsed * 0.3
-  })
-
+function CardsStatic({ onCardClick }) {
   const radius = 4
   const angleStep = (2 * Math.PI) / projects.length
 
   return (
-    <group ref={groupRef}>
+    <group>
       {projects.map((p, i) => {
         const angle = i * angleStep
         const x = Math.cos(angle) * radius
@@ -138,7 +131,7 @@ export default function Products() {
           <pointLight position={[10, 10, 10]} intensity={1} />
           <OrbitControls />
 
-          {/* Central Sphere with text inside */}
+          {/* Center Sphere */}
           <group position={[0, 0, 0]}>
             <Sphere args={[1.5, 64, 64]}>
               <meshStandardMaterial color="yellow" />
@@ -155,7 +148,7 @@ export default function Products() {
             </Text>
           </group>
 
-          <RotatingCards onCardClick={handleCardClick} />
+          <CardsStatic onCardClick={handleCardClick} />
         </Canvas>
       </div>
 
