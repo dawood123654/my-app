@@ -1,6 +1,6 @@
 'use client'
 
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Sphere, Text } from '@react-three/drei'
 import { useRef, useState } from 'react'
 
@@ -44,10 +44,8 @@ function ProjectCard({ project, position, onClick }) {
         <meshStandardMaterial color={hovered ? 'orange' : 'royalblue'} />
       </mesh>
 
-      {/* Title on back side */}
       <Text
-        position={[0, 0, -0.11]}
-        rotation={[0, Math.PI, 0]}
+        position={[0, 0, 0.11]}
         fontSize={0.2}
         color="white"
         anchorX="center"
@@ -59,12 +57,12 @@ function ProjectCard({ project, position, onClick }) {
   )
 }
 
-function CardsStatic({ onCardClick }) {
+function RotatingCards({ onCardClick }) {
   const radius = 4
   const angleStep = (2 * Math.PI) / projects.length
 
   return (
-    <group>
+    <>
       {projects.map((p, i) => {
         const angle = i * angleStep
         const x = Math.cos(angle) * radius
@@ -79,7 +77,7 @@ function CardsStatic({ onCardClick }) {
           />
         )
       })}
-    </group>
+    </>
   )
 }
 
@@ -119,6 +117,15 @@ export default function Products() {
     setSelectedProject(null)
   }
 
+  const sphereGroupRef = useRef()
+
+  useFrame(({ clock }) => {
+    const elapsed = clock.getElapsedTime()
+    if (sphereGroupRef.current) {
+      sphereGroupRef.current.rotation.y = elapsed * 0.3
+    }
+  })
+
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center relative">
       <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
@@ -131,8 +138,7 @@ export default function Products() {
           <pointLight position={[10, 10, 10]} intensity={1} />
           <OrbitControls />
 
-          {/* Center Sphere */}
-          <group position={[0, 0, 0]}>
+          <group ref={sphereGroupRef} position={[0, 0, 0]}>
             <Sphere args={[1.5, 64, 64]}>
               <meshStandardMaterial color="yellow" />
             </Sphere>
@@ -148,7 +154,7 @@ export default function Products() {
             </Text>
           </group>
 
-          <CardsStatic onCardClick={handleCardClick} />
+          <RotatingCards onCardClick={handleCardClick} />
         </Canvas>
       </div>
 
