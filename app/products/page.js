@@ -7,23 +7,23 @@ import { useRef, useState } from 'react'
 const projects = [
   {
     id: 1,
-    title: 'الاسم',
-    description: 'داود محمد – مطور واجهات أمامية شغوف ببناء تجارب تفاعلية وتصاميم جذابة.',
+    title: 'Name',
+    description: 'Dawod Mohammed – A front-end developer passionate about building interactive experiences and beautiful designs.',
   },
   {
     id: 2,
-    title: 'الخبرات',
-    description: 'خريج جامعة NBU، عملت على مشاريع ويب متنوعة باستخدام React و Next.js.',
+    title: 'Experience',
+    description: 'Graduated from NBU, worked on various web projects using React and Next.js.',
   },
   {
     id: 3,
-    title: 'المهارات',
-    description: 'HTML، CSS، JavaScript، React، Next.js، Three.js، Tailwind CSS.',
+    title: 'Skills',
+    description: 'HTML, CSS, JavaScript, React, Next.js, Three.js, Tailwind CSS.',
   },
   {
     id: 4,
-    title: 'الهوايات',
-    description: 'تصميم ثلاثي الأبعاد، الذكاء الاصطناعي، متابعة أخبار التقنية وقراءتها.',
+    title: 'Hobbies',
+    description: '3D design, artificial intelligence, and following tech news and trends.',
   },
 ]
 
@@ -106,7 +106,7 @@ function Modal({ project, onClose }) {
           className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
           onClick={onClose}
         >
-          إغلاق
+          Close
         </button>
       </div>
     </div>
@@ -148,7 +148,7 @@ export default function Products() {
               anchorX="center"
               anchorY="middle"
             >
-              مرحبًا بك
+              Welcome
             </Text>
           </group>
 
@@ -159,15 +159,15 @@ export default function Products() {
       <Modal project={selectedProject} onClose={closeModal} />
 
       <section className="w-full max-w-3xl text-center mt-12 px-4 sm:px-8">
-        <h2 className="text-2xl font-bold mb-4 text-white">من أنا؟</h2>
+        <h2 className="text-2xl font-bold mb-4 text-white">About Me</h2>
         <p className="text-gray-300 mb-2">
-          أنا <strong>داود محمد</strong>، مطور واجهات أمامية شغوف ببناء تجارب تفاعلية وواجهات استخدام جذابة.
+          I'm <strong>Dawod Mohammed</strong>, a front-end developer passionate about building interactive and visually appealing user interfaces.
         </p>
         <p className="text-gray-300 mb-2">
-          أستخدم تقنيات حديثة مثل <strong>React</strong>، <strong>Next.js</strong>، و<strong>Three.js</strong> لصناعة مواقع عصرية تواكب المستقبل.
+          I work with modern technologies like <strong>React</strong>, <strong>Next.js</strong>, and <strong>Three.js</strong> to create futuristic websites.
         </p>
         <p className="text-gray-300 mb-4">
-          أطمح إلى الجمع بين الإبداع البصري والبرمجة العملية لبناء مشاريع مميزة تقدم تجربة استخدام فريدة.
+          My goal is to combine visual creativity with functional code to build unique and meaningful projects.
         </p>
 
         <div className="flex flex-wrap justify-center gap-6 text-orange-400 font-medium mt-4">
@@ -176,7 +176,7 @@ export default function Products() {
       </section>
 
       <footer className="mt-10 text-gray-400 text-sm pb-6">
-        &copy; {new Date().getFullYear()} Dawod Mohammed. جميع الحقوق محفوظة.
+        &copy; {new Date().getFullYear()} Dawod Mohammed. All rights reserved.
       </footer>
     </main>
   )
