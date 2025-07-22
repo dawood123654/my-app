@@ -54,6 +54,18 @@ function ProjectCard({ project, position, onClick }) {
       >
         {project.title}
       </Text>
+
+      {/* Text on back side */}
+      <Text
+        position={[0, 0, -0.11]}
+        rotation={[0, Math.PI, 0]} // rotate 180 degrees to face back
+        fontSize={0.2}
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {project.title}
+      </Text>
     </group>
   )
 }
