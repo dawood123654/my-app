@@ -4,6 +4,30 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Sphere, Text } from '@react-three/drei'
 import { useRef, useState } from 'react'
 
+// النصوص باللغتين
+const translations = {
+  en: {
+    portfolio: 'Portfolio',
+    aboutMe: 'About Me',
+    description1: "I'm Dawod Mohammed, a frontend developer passionate about building interactive and beautiful user experiences.",
+    description2: 'I work with modern technologies like React, Next.js, and Three.js to create future-facing websites.',
+    description3: 'I aim to combine visual creativity with technical skills to build unique and engaging digital products.',
+    contact: 'Email',
+    welcome: 'Welcome',
+    close: 'Close',
+  },
+  ar: {
+    portfolio: 'ملف الأعمال',
+    aboutMe: 'من أنا',
+    description1: 'أنا داود محمد، مطور واجهات أمامية شغوف بإنشاء تجارب مستخدم تفاعلية وجميلة.',
+    description2: 'أعمل باستخدام تقنيات حديثة مثل React وNext.js وThree.js لبناء مواقع مستقبلية.',
+    description3: 'أسعى للجمع بين الإبداع البصري والمهارات التقنية لإنشاء منتجات رقمية مميزة.',
+    contact: 'البريد الإلكتروني',
+    welcome: 'مرحبًا',
+    close: 'إغلاق',
+  },
+}
+
 const projects = [
   {
     id: 1,
@@ -26,20 +50,6 @@ const projects = [
     description: '3D design, AI, reading tech news and articles.',
   },
 ]
-
-function BouncingDots() {
-  return (
-    <div className="fixed top-4 right-4 flex space-x-2 z-50">
-      {[...Array(3)].map((_, i) => (
-        <div
-          key={i}
-          className="w-3 h-3 bg-white rounded-full animate-bounce"
-          style={{ animationDelay: `${i * 0.2}s` }}
-        />
-      ))}
-    </div>
-  )
-}
 
 function ProjectCard({ project, position, onClick }) {
   const ref = useRef()
@@ -113,7 +123,7 @@ function RotatingCards({ onCardClick }) {
   )
 }
 
-function RotatingSphere() {
+function RotatingSphere({ text }) {
   const groupRef = useRef()
 
   useFrame(({ clock }) => {
@@ -135,13 +145,13 @@ function RotatingSphere() {
         anchorX="center"
         anchorY="middle"
       >
-        Welcome
+        {text}
       </Text>
     </group>
   )
 }
 
-function Modal({ project, onClose }) {
+function Modal({ project, onClose, t }) {
   if (!project) return null
 
   return (
@@ -159,7 +169,7 @@ function Modal({ project, onClose }) {
           className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-purple-600 hover:to-pink-500 text-white px-4 py-2 rounded-md font-medium shadow-md transition duration-300"
           onClick={onClose}
         >
-          Close
+          {t.close}
         </button>
       </div>
     </div>
@@ -168,21 +178,25 @@ function Modal({ project, onClose }) {
 
 export default function Products() {
   const [selectedProject, setSelectedProject] = useState(null)
+  const [lang, setLang] = useState('en')
+  const t = translations[lang]
 
-  const handleCardClick = (project) => {
-    setSelectedProject(project)
-  }
-
-  const closeModal = () => {
-    setSelectedProject(null)
+  const toggleLanguage = () => {
+    setLang((prev) => (prev === 'en' ? 'ar' : 'en'))
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-800 to-indigo-700 text-white flex flex-col items-center justify-center relative">
-      <BouncingDots />
-      <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
-        Portfolio
-      </h1>
+    <main className="min-h-screen bg-[#0b0e1a] text-white flex flex-col items-center justify-center relative">
+      {/* الهيدر */}
+      <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
+        <h1 className="text-2xl sm:text-3xl font-bold">{t.portfolio}</h1>
+        <button
+          onClick={toggleLanguage}
+          className="bg-white/10 text-white px-4 py-1 rounded-full text-sm hover:bg-white/20 transition"
+        >
+          {lang === 'en' ? 'العربية' : 'English'}
+        </button>
+      </div>
 
       <div className="w-full max-w-6xl h-[600px] sm:h-[500px]">
         <Canvas shadows camera={{ position: [0, 3, 10], fov: 50 }}>
@@ -190,27 +204,21 @@ export default function Products() {
           <pointLight position={[10, 10, 10]} intensity={1} />
           <OrbitControls />
 
-          <RotatingSphere />
-          <RotatingCards onCardClick={handleCardClick} />
+          <RotatingSphere text={t.welcome} />
+          <RotatingCards onCardClick={setSelectedProject} />
         </Canvas>
       </div>
 
-      <Modal project={selectedProject} onClose={closeModal} />
+      <Modal project={selectedProject} onClose={() => setSelectedProject(null)} t={t} />
 
       <section className="w-full max-w-3xl text-center mt-12 px-4 sm:px-8">
-        <h2 className="text-2xl font-bold mb-4 text-white">About Me</h2>
-        <p className="text-gray-300 mb-2">
-          I'm <strong>Dawod Mohammed</strong>, a frontend developer passionate about building interactive and beautiful user experiences.
-        </p>
-        <p className="text-gray-300 mb-2">
-          I work with modern technologies like <strong>React</strong>, <strong>Next.js</strong>, and <strong>Three.js</strong> to create future-facing websites.
-        </p>
-        <p className="text-gray-300 mb-4">
-          I aim to combine visual creativity with technical skills to build unique and engaging digital products.
-        </p>
+        <h2 className="text-2xl font-bold mb-4 text-white">{t.aboutMe}</h2>
+        <p className="text-gray-300 mb-2">{t.description1}</p>
+        <p className="text-gray-300 mb-2">{t.description2}</p>
+        <p className="text-gray-300 mb-4">{t.description3}</p>
 
         <div className="flex flex-wrap justify-center gap-6 text-orange-400 font-medium mt-4">
-          <a href="mailto:dawodalkhazal2233@gmail.com">Email</a>
+          <a href="mailto:dawodalkhazal2233@gmail.com">{t.contact}</a>
         </div>
       </section>
 
