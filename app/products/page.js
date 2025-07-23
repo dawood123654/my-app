@@ -27,20 +27,6 @@ const projects = [
   },
 ]
 
-function BouncingDots() {
-  return (
-    <div className="fixed top-4 right-4 flex space-x-2 z-50">
-      {[...Array(3)].map((_, i) => (
-        <div
-          key={i}
-          className="w-3 h-3 bg-white rounded-full animate-bounce"
-          style={{ animationDelay: `${i * 0.2}s` }}
-        />
-      ))}
-    </div>
-  )
-}
-
 function ProjectCard({ project, position, onClick }) {
   const ref = useRef()
   const [hovered, setHovered] = useState(false)
@@ -150,18 +136,32 @@ function Modal({ project, onClose }) {
       onClick={onClose}
     >
       <div
-        className="backdrop-blur-md bg-white/10 text-white border border-white/20 p-6 rounded-xl shadow-2xl max-w-sm w-[90%] transition-all"
+        className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 text-white border border-white/30 p-8 rounded-2xl shadow-2xl max-w-md w-[90%] transition-all transform scale-100 hover:scale-[1.02] duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-bold mb-4">{project.title}</h2>
-        <p className="mb-6">{project.description}</p>
+        <h2 className="text-3xl font-extrabold mb-4 text-orange-300 drop-shadow-md">{project.title}</h2>
+        <p className="mb-6 text-gray-100 leading-relaxed">{project.description}</p>
         <button
-          className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-purple-600 hover:to-pink-500 text-white px-4 py-2 rounded-md font-medium shadow-md transition duration-300"
+          className="bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 hover:brightness-110 text-white px-5 py-2 rounded-md font-semibold shadow-md transition duration-300"
           onClick={onClose}
         >
-          Close
+          ✨ Got it!
         </button>
       </div>
+    </div>
+  )
+}
+
+function BouncingDots() {
+  return (
+    <div className="fixed top-4 right-4 flex space-x-2 z-50">
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={i}
+          className="w-3 h-3 bg-white rounded-full animate-bounce"
+          style={{ animationDelay: `${i * 0.2}s` }}
+        />
+      ))}
     </div>
   )
 }
@@ -178,11 +178,12 @@ export default function Products() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-800 to-indigo-700 text-white flex flex-col items-center justify-center relative">
-      <BouncingDots />
-      <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
+    <main className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white flex flex-col items-center justify-center relative">
+      <h1 className="absolute top-6 left-4 z-10 text-3xl font-bold drop-shadow-lg text-white">
         Portfolio
       </h1>
+
+      <BouncingDots />
 
       <div className="w-full max-w-6xl h-[600px] sm:h-[500px]">
         <Canvas shadows camera={{ position: [0, 3, 10], fov: 50 }}>
