@@ -27,6 +27,12 @@ const projects = [
   },
 ]
 
+function Spinner() {
+  return (
+    <div className="fixed top-4 right-4 w-8 h-8 border-4 border-t-transparent border-white rounded-full animate-spin z-50" />
+  )
+}
+
 function ProjectCard({ project, position, onClick }) {
   const ref = useRef()
   const [hovered, setHovered] = useState(false)
@@ -165,6 +171,7 @@ export default function Products() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-800 to-indigo-700 text-white flex flex-col items-center justify-center relative">
+      <Spinner />
       <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
         Portfolio
       </h1>
