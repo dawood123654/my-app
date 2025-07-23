@@ -164,7 +164,7 @@ export default function Products() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center relative">
+    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white flex flex-col items-center justify-center relative">
       <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
         Portfolio
       </h1>
@@ -182,20 +182,22 @@ export default function Products() {
 
       <Modal project={selectedProject} onClose={closeModal} />
 
-      <section className="w-full max-w-3xl text-center mt-12 px-4 sm:px-8">
-        <h2 className="text-2xl font-bold mb-4 text-white">About Me</h2>
-        <p className="text-gray-300 mb-2">
-          I'm <strong>Dawod Mohammed</strong>, a frontend developer passionate about building interactive and beautiful user experiences.
-        </p>
-        <p className="text-gray-300 mb-2">
-          I work with modern technologies like <strong>React</strong>, <strong>Next.js</strong>, and <strong>Three.js</strong> to create future-facing websites.
-        </p>
-        <p className="text-gray-300 mb-4">
-          I aim to combine visual creativity with technical skills to build unique and engaging digital products.
-        </p>
+      <section className="w-full max-w-3xl mt-12 px-4 sm:px-8">
+        <div className="backdrop-blur-md bg-white/10 text-white border border-white/20 p-6 rounded-xl shadow-2xl text-center">
+          <h2 className="text-2xl font-bold mb-4">About Me</h2>
+          <p className="text-gray-300 mb-2">
+            I'm <strong>Dawod Mohammed</strong>, a frontend developer passionate about building interactive and beautiful user experiences.
+          </p>
+          <p className="text-gray-300 mb-2">
+            I work with modern technologies like <strong>React</strong>, <strong>Next.js</strong>, and <strong>Three.js</strong> to create future-facing websites.
+          </p>
+          <p className="text-gray-300 mb-4">
+            I aim to combine visual creativity with technical skills to build unique and engaging digital products.
+          </p>
 
-        <div className="flex flex-wrap justify-center gap-6 text-orange-400 font-medium mt-4">
-          <a href="mailto:dawodalkhazal2233@gmail.com">Email</a>
+          <div className="flex flex-wrap justify-center gap-6 text-orange-400 font-medium mt-4">
+            <a href="mailto:dawodalkhazal2233@gmail.com">Email</a>
+          </div>
         </div>
       </section>
 
