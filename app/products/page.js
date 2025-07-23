@@ -44,7 +44,6 @@ function ProjectCard({ project, position, onClick }) {
         <meshStandardMaterial color={hovered ? 'orange' : 'royalblue'} />
       </mesh>
 
-      {/* Text on front side */}
       <Text
         position={[0, 0, 0.11]}
         fontSize={0.2}
@@ -55,10 +54,9 @@ function ProjectCard({ project, position, onClick }) {
         {project.title}
       </Text>
 
-      {/* Text on back side */}
       <Text
         position={[0, 0, -0.11]}
-        rotation={[0, Math.PI, 0]} // rotate 180 degrees to face back
+        rotation={[0, Math.PI, 0]}
         fontSize={0.2}
         color="white"
         anchorX="center"
@@ -138,13 +136,13 @@ function Modal({ project, onClose }) {
       onClick={onClose}
     >
       <div
-        className="bg-white text-black p-4 sm:p-6 rounded max-w-sm w-[90%]"
+        className="backdrop-blur-md bg-white/10 text-white border border-white/20 p-6 rounded-xl shadow-2xl max-w-sm w-[90%] transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-2xl font-bold mb-4">{project.title}</h2>
         <p className="mb-6">{project.description}</p>
         <button
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-purple-600 hover:to-pink-500 text-white px-4 py-2 rounded-md font-medium shadow-md transition duration-300"
           onClick={onClose}
         >
           Close
@@ -171,7 +169,7 @@ export default function Products() {
         Portfolio
       </h1>
 
-      <div className="w-full max-w-6xl h-[600px] sm:h-[500px] xs:h-[400px]">
+      <div className="w-full max-w-6xl h-[600px] sm:h-[500px]">
         <Canvas shadows camera={{ position: [0, 3, 10], fov: 50 }}>
           <ambientLight intensity={0.3} />
           <pointLight position={[10, 10, 10]} intensity={1} />
