@@ -27,9 +27,17 @@ const projects = [
   },
 ]
 
-function Spinner() {
+function BouncingDots() {
   return (
-    <div className="fixed top-4 right-4 w-8 h-8 border-4 border-t-transparent border-white rounded-full animate-spin z-50" />
+    <div className="fixed top-4 right-4 flex space-x-2 z-50">
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={i}
+          className="w-3 h-3 bg-white rounded-full animate-bounce"
+          style={{ animationDelay: `${i * 0.2}s` }}
+        />
+      ))}
+    </div>
   )
 }
 
@@ -171,7 +179,7 @@ export default function Products() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-800 to-indigo-700 text-white flex flex-col items-center justify-center relative">
-      <Spinner />
+      <BouncingDots />
       <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
         Portfolio
       </h1>
