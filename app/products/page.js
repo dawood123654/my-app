@@ -164,7 +164,7 @@ export default function Products() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white flex flex-col items-center justify-center relative">
+    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center relative">
       <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
         Portfolio
       </h1>
