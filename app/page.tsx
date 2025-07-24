@@ -1,103 +1,222 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { Canvas, useFrame } from '@react-three/fiber'
+import { OrbitControls, Sphere, Text } from '@react-three/drei'
+import { useRef, useState } from 'react'
+
+const projects = [
+  {
+    id: 1,
+    title: 'Name',
+    description: 'Dawod Mohammed – Frontend developer passionate about interactive design.',
+  },
+  {
+    id: 2,
+    title: 'Experience',
+    description: 'Graduate of NBU. Worked on various web projects using React and Next.js.',
+  },
+  {
+    id: 3,
+    title: 'Skills',
+    description: 'HTML, CSS, JavaScript, React, Next.js, Three.js, Tailwind CSS.',
+  },
+  {
+    id: 4,
+    title: 'Hobbies',
+    description: '3D design, AI, reading tech news and articles.',
+  },
+]
+
+function BouncingDots() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="fixed top-4 right-4 flex space-x-2 z-50">
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={i}
+          className="w-3 h-3 bg-white rounded-full animate-bounce"
+          style={{ animationDelay: `${i * 0.2}s` }}
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      ))}
     </div>
-  );
+  )
+}
+
+function ProjectCard({ project, position, onClick }) {
+  const ref = useRef()
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <group position={position} scale={hovered ? 1.3 : 1}>
+      <mesh
+        ref={ref}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        onClick={() => onClick(project)}
+        cursor="pointer"
+      >
+        <boxGeometry args={[1.5, 1, 0.2]} />
+        <meshStandardMaterial color={hovered ? 'orange' : 'royalblue'} />
+      </mesh>
+
+      <Text
+        position={[0, 0, 0.11]}
+        fontSize={0.2}
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {project.title}
+      </Text>
+
+      <Text
+        position={[0, 0, -0.11]}
+        rotation={[0, Math.PI, 0]}
+        fontSize={0.2}
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {project.title}
+      </Text>
+    </group>
+  )
+}
+
+function RotatingCards({ onCardClick }) {
+  const groupRef = useRef()
+
+  useFrame(({ clock }) => {
+    const elapsed = clock.getElapsedTime()
+    groupRef.current.rotation.y = elapsed * 0.3
+  })
+
+  const radius = 4
+  const angleStep = (2 * Math.PI) / projects.length
+
+  return (
+    <group ref={groupRef}>
+      {projects.map((p, i) => {
+        const angle = i * angleStep
+        const x = Math.cos(angle) * radius
+        const z = Math.sin(angle) * radius
+
+        return (
+          <ProjectCard
+            key={p.id}
+            project={p}
+            position={[x, 0, z]}
+            onClick={onCardClick}
+          />
+        )
+      })}
+    </group>
+  )
+}
+
+function RotatingSphere() {
+  const groupRef = useRef()
+
+  useFrame(({ clock }) => {
+    const elapsed = clock.getElapsedTime()
+    if (groupRef.current) {
+      groupRef.current.rotation.y = elapsed * 0.3
+    }
+  })
+
+  return (
+    <group ref={groupRef}>
+      <Sphere args={[1.5, 64, 64]}>
+        <meshStandardMaterial color="yellow" />
+      </Sphere>
+      <Text
+        position={[0, 0, 0.4]}
+        fontSize={0.25}
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+      >
+        Welcome
+      </Text>
+    </group>
+  )
+}
+
+function Modal({ project, onClose }) {
+  if (!project) return null
+
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+      onClick={onClose}
+    >
+      <div
+        className="backdrop-blur-md bg-white/10 text-white border border-white/20 p-6 rounded-xl shadow-2xl max-w-sm w-[90%] transition-all"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-2xl font-bold mb-4">{project.title}</h2>
+        <p className="mb-6">{project.description}</p>
+        <button
+          className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-purple-600 hover:to-pink-500 text-white px-4 py-2 rounded-md font-medium shadow-md transition duration-300"
+          onClick={onClose}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default function Products() {
+  const [selectedProject, setSelectedProject] = useState(null)
+
+  const handleCardClick = (project) => {
+    setSelectedProject(project)
+  }
+
+  const closeModal = () => {
+    setSelectedProject(null)
+  }
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-800 to-indigo-700 text-white flex flex-col items-center justify-center relative">
+      <BouncingDots />
+      <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
+        Portfolio
+      </h1>
+
+      <div className="w-full max-w-6xl h-[600px] sm:h-[500px]">
+        <Canvas shadows camera={{ position: [0, 3, 10], fov: 50 }}>
+          <ambientLight intensity={0.3} />
+          <pointLight position={[10, 10, 10]} intensity={1} />
+          <OrbitControls />
+
+          <RotatingSphere />
+          <RotatingCards onCardClick={handleCardClick} />
+        </Canvas>
+      </div>
+
+      <Modal project={selectedProject} onClose={closeModal} />
+
+      <section className="w-full max-w-3xl text-center mt-12 px-4 sm:px-8">
+        <h2 className="text-2xl font-bold mb-4 text-white">About Me</h2>
+        <p className="text-gray-300 mb-2">
+          I'm <strong>Dawod Mohammed</strong>, a frontend developer passionate about building interactive and beautiful user experiences.
+        </p>
+        <p className="text-gray-300 mb-2">
+          I work with modern technologies like <strong>React</strong>, <strong>Next.js</strong>, and <strong>Three.js</strong> to create future-facing websites.
+        </p>
+        <p className="text-gray-300 mb-4">
+          I aim to combine visual creativity with technical skills to build unique and engaging digital products.
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-6 text-orange-400 font-medium mt-4">
+          <a href="mailto:dawodalkhazal2233@gmail.com">Email</a>
+        </div>
+      </section>
+
+      <footer className="mt-10 text-gray-400 text-sm pb-6">
+        &copy; {new Date().getFullYear()} Dawod Mohammed. All rights reserved.
+      </footer>
+    </main>
+  )
 }
