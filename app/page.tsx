@@ -2,7 +2,8 @@
 
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Sphere, Text } from '@react-three/drei'
-import { useRef, useState } from 'react'
+import { useRef, useState, RefObject } from 'react'
+import * as THREE from 'three'
 
 const projects = [
   {
@@ -41,18 +42,31 @@ function BouncingDots() {
   )
 }
 
-function ProjectCard({ project, position, onClick }) {
-  const ref = useRef()
+function ProjectCard({
+  project,
+  position,
+  onClick,
+}: {
+  project: any
+  position: [number, number, number]
+  onClick: (project: any) => void
+}) {
+  const ref = useRef<THREE.Mesh | null>(null)
   const [hovered, setHovered] = useState(false)
 
   return (
     <group position={position} scale={hovered ? 1.3 : 1}>
       <mesh
         ref={ref}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={() => {
+          setHovered(true)
+          document.body.style.cursor = 'pointer'
+        }}
+        onPointerOut={() => {
+          setHovered(false)
+          document.body.style.cursor = 'default'
+        }}
         onClick={() => onClick(project)}
-        cursor="pointer"
       >
         <boxGeometry args={[1.5, 1, 0.2]} />
         <meshStandardMaterial color={hovered ? 'orange' : 'royalblue'} />
@@ -82,12 +96,14 @@ function ProjectCard({ project, position, onClick }) {
   )
 }
 
-function RotatingCards({ onCardClick }) {
-  const groupRef = useRef()
+function RotatingCards({ onCardClick }: { onCardClick: (project: any) => void }) {
+  const groupRef = useRef<THREE.Group | null>(null)
 
   useFrame(({ clock }) => {
     const elapsed = clock.getElapsedTime()
-    groupRef.current.rotation.y = elapsed * 0.3
+    if (groupRef.current) {
+      groupRef.current.rotation.y = elapsed * 0.3
+    }
   })
 
   const radius = 4
@@ -114,7 +130,7 @@ function RotatingCards({ onCardClick }) {
 }
 
 function RotatingSphere() {
-  const groupRef = useRef()
+  const groupRef = useRef<THREE.Group | null>(null)
 
   useFrame(({ clock }) => {
     const elapsed = clock.getElapsedTime()
@@ -141,7 +157,7 @@ function RotatingSphere() {
   )
 }
 
-function Modal({ project, onClose }) {
+function Modal({ project, onClose }: { project: any; onClose: () => void }) {
   if (!project) return null
 
   return (
@@ -167,9 +183,9 @@ function Modal({ project, onClose }) {
 }
 
 export default function Products() {
-  const [selectedProject, setSelectedProject] = useState(null)
+  const [selectedProject, setSelectedProject] = useState<any>(null)
 
-  const handleCardClick = (project) => {
+  const handleCardClick = (project: any) => {
     setSelectedProject(project)
   }
 
@@ -220,3 +236,5 @@ export default function Products() {
     </main>
   )
 }
+
+
