@@ -1,240 +1,259 @@
 'use client'
 
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Sphere, Text } from '@react-three/drei'
-import { useRef, useState, RefObject } from 'react'
-import * as THREE from 'three'
+import { useState } from 'react';
 
-const projects = [
+const lessons = [
   {
     id: 1,
-    title: 'Name',
-    description: 'Dawod Mohammed – Frontend developer passionate about interactive design.',
+    title: 'مقدمة في JavaScript',
+    description: 'استخدم console.log لطباعة الرسائل.',
+    defaultCode: 'console.log("مرحبا بالعالم!");',
+    challenge: 'اطبع النص: Hello, Dawod!',
+    quiz: {
+      question: 'ما وظيفة console.log؟',
+      options: ['قراءة ملف', 'كتابة على الشاشة', 'تنفيذ كود', 'حذف متغير'],
+      answer: 'كتابة على الشاشة',
+    },
   },
   {
     id: 2,
-    title: 'Experience',
-    description: 'Graduate of NBU. Worked on various web projects using React and Next.js.',
+    title: 'المتغيرات',
+    description: 'تعلم استخدام let و const.',
+    defaultCode: 'let name = "Dawod";\nconsole.log(name);',
+    challenge: 'أنشئ متغير باسم age واطبع قيمته.',
+    quiz: {
+      question: 'ما الكلمة المفتاحية التي تُستخدم لإنشاء متغير قابل للتغيير؟',
+      options: ['const', 'var', 'final', 'let'],
+      answer: 'let',
+    },
   },
   {
     id: 3,
-    title: 'Skills',
-    description: 'HTML, CSS, JavaScript, React, Next.js, Three.js, Tailwind CSS.',
+    title: 'الجمل الشرطية',
+    description: 'استخدم if للتحقق من الشروط.',
+    defaultCode: 'let x = 5;\nif (x > 3) {\n  console.log("x أكبر من 3");\n}',
+    challenge: 'تحقق إذا كان الرقم 10 أكبر من 5 واطبع رسالة.',
+    quiz: {
+      question: 'أي عبارة شرطية صحيحة للتحقق من أن x أكبر من 5؟',
+      options: ['if x > 5', 'if (x > 5)', 'if x > 5 then', 'if: x > 5'],
+      answer: 'if (x > 5)',
+    },
   },
   {
     id: 4,
-    title: 'Hobbies',
-    description: '3D design, AI, reading tech news and articles.',
+    title: 'الحلقات (Loops)',
+    description: 'استخدم for لتنفيذ كود عدة مرات.',
+    defaultCode: 'for (let i = 0; i < 5; i++) {\n  console.log("العدد: " + i);\n}',
+    challenge: 'اكتب حلقة تطبع الأعداد من 1 إلى 3.',
+    quiz: {
+      question: 'ما الكلمة المستخدمة لإنشاء حلقة؟',
+      options: ['loop', 'while', 'repeat', 'for'],
+      answer: 'for',
+    },
   },
-]
+  {
+    id: 5,
+    title: 'الدوال (Functions)',
+    description: 'الدوال تساعدك على تنظيم الكود وإعادة استخدامه.',
+    defaultCode: 'function sayHello(name) {\n  console.log("مرحبا " + name);\n}\n\nsayHello("Dawod");',
+    challenge: 'أنشئ دالة تطبع "مرحباً بالجميع" عند استدعائها.',
+    quiz: {
+      question: 'ما الكلمة المفتاحية لتعريف دالة؟',
+      options: ['define', 'func', 'function', 'method'],
+      answer: 'function',
+    },
+  },
+  {
+    id: 6,
+    title: 'المصفوفات (Arrays)',
+    description: 'المصفوفة هي مجموعة من القيم تُخزن داخل متغير واحد.',
+    defaultCode: 'let colors = ["أحمر", "أخضر", "أزرق"];\nconsole.log(colors[0]);',
+    challenge: 'أنشئ مصفوفة تحتوي على 3 أرقام واطبع العنصر الثاني.',
+    quiz: {
+      question: 'كيف يمكن الوصول إلى أول عنصر في المصفوفة؟',
+      options: ['array.1', 'array[1]', 'array[0]', 'array(first)'],
+      answer: 'array[0]',
+    },
+  },
+];
 
-function BouncingDots() {
+export default function CodingLesson() {
+  const [selectedLessonId, setSelectedLessonId] = useState(lessons[0].id);
+  const lesson = lessons.find(l => l.id === selectedLessonId);
+  const [code, setCode] = useState(lesson.defaultCode);
+  const [output, setOutput] = useState('');
+  const [error, setError] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
+  const [quizResult, setQuizResult] = useState('');
+
+  const runCode = () => {
+    setOutput('');
+    setError('');
+    try {
+      let logs = [];
+      const originalConsoleLog = console.log;
+      console.log = (msg) => logs.push(String(msg));
+      const func = new Function(code);
+      func();
+      setOutput(logs.join('\n'));
+      console.log = originalConsoleLog;
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleLessonChange = (lessonId) => {
+    const selected = lessons.find(l => l.id === lessonId);
+    setSelectedLessonId(lessonId);
+    setCode(selected.defaultCode);
+    setOutput('');
+    setError('');
+    setSelectedOption('');
+    setQuizResult('');
+  };
+
+  const checkAnswer = () => {
+    if (selectedOption === lesson.quiz.answer) {
+      setQuizResult('✔️ إجابة صحيحة');
+    } else {
+      setQuizResult('❌ إجابة خاطئة');
+    }
+  };
+
   return (
-    <div className="fixed top-4 right-4 flex space-x-2 z-50">
-      {[...Array(3)].map((_, i) => (
-        <div
-          key={i}
-          className="w-3 h-3 bg-white rounded-full animate-bounce"
-          style={{ animationDelay: `${i * 0.2}s` }}
+    <div style={{
+      display: 'flex',
+      flexDirection: 'row',
+      fontFamily: 'Arial, sans-serif',
+      minHeight: '100vh',
+      flexWrap: 'wrap'
+    }}>
+      {/* الشريط الجانبي */}
+      <div style={{
+        width: '100%',
+        maxWidth: 250,
+        background: '#1e1e2f',
+        color: '#fff',
+        padding: 20,
+        flexShrink: 0
+      }}>
+        <h2 style={{ fontSize: 18, marginBottom: 10 }}>الدروس</h2>
+        {lessons.map((l) => (
+          <div
+            key={l.id}
+            onClick={() => handleLessonChange(l.id)}
+            style={{
+              padding: 10,
+              cursor: 'pointer',
+              backgroundColor: selectedLessonId === l.id ? '#3949ab' : 'transparent',
+              borderRadius: 6,
+              marginBottom: 5,
+              color: selectedLessonId === l.id ? '#fff' : '#ccc',
+              transition: '0.3s'
+            }}
+          >
+            {l.title}
+          </div>
+        ))}
+      </div>
+
+      {/* محتوى الدرس */}
+      <div style={{
+        flex: 1,
+        padding: 20,
+        backgroundColor: '#fdfdfd',
+        minWidth: 300
+      }}>
+        <h1 style={{ color: '#1565c0' }}>{lesson.title}</h1>
+        <pre style={{
+          whiteSpace: 'pre-wrap',
+          backgroundColor: '#e3f2fd',
+          padding: 15,
+          borderRadius: 8,
+          border: '1px solid #64b5f6'
+        }}>
+          {lesson.description}
+        </pre>
+
+        <h2 style={{ color: '#1565c0' }}>تمرين:</h2>
+        <p>{lesson.challenge}</p>
+
+        <textarea
+          rows={10}
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          style={{
+            width: '100%',
+            fontFamily: 'monospace',
+            fontSize: 16,
+            borderRadius: 8,
+            padding: 10,
+            marginBottom: 10,
+            border: '2px solid #64b5f6',
+            backgroundColor: '#fff',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}
         />
-      ))}
-    </div>
-  )
-}
 
-function ProjectCard({
-  project,
-  position,
-  onClick,
-}: {
-  project: any
-  position: [number, number, number]
-  onClick: (project: any) => void
-}) {
-  const ref = useRef<THREE.Mesh | null>(null)
-  const [hovered, setHovered] = useState(false)
-
-  return (
-    <group position={position} scale={hovered ? 1.3 : 1}>
-      <mesh
-        ref={ref}
-        onPointerOver={() => {
-          setHovered(true)
-          document.body.style.cursor = 'pointer'
-        }}
-        onPointerOut={() => {
-          setHovered(false)
-          document.body.style.cursor = 'default'
-        }}
-        onClick={() => onClick(project)}
-      >
-        <boxGeometry args={[1.5, 1, 0.2]} />
-        <meshStandardMaterial color={hovered ? 'orange' : 'royalblue'} />
-      </mesh>
-
-      <Text
-        position={[0, 0, 0.11]}
-        fontSize={0.2}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {project.title}
-      </Text>
-
-      <Text
-        position={[0, 0, -0.11]}
-        rotation={[0, Math.PI, 0]}
-        fontSize={0.2}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {project.title}
-      </Text>
-    </group>
-  )
-}
-
-function RotatingCards({ onCardClick }: { onCardClick: (project: any) => void }) {
-  const groupRef = useRef<THREE.Group | null>(null)
-
-  useFrame(({ clock }) => {
-    const elapsed = clock.getElapsedTime()
-    if (groupRef.current) {
-      groupRef.current.rotation.y = elapsed * 0.3
-    }
-  })
-
-  const radius = 4
-  const angleStep = (2 * Math.PI) / projects.length
-
-  return (
-    <group ref={groupRef}>
-      {projects.map((p, i) => {
-        const angle = i * angleStep
-        const x = Math.cos(angle) * radius
-        const z = Math.sin(angle) * radius
-
-        return (
-          <ProjectCard
-            key={p.id}
-            project={p}
-            position={[x, 0, z]}
-            onClick={onCardClick}
-          />
-        )
-      })}
-    </group>
-  )
-}
-
-function RotatingSphere() {
-  const groupRef = useRef<THREE.Group | null>(null)
-
-  useFrame(({ clock }) => {
-    const elapsed = clock.getElapsedTime()
-    if (groupRef.current) {
-      groupRef.current.rotation.y = elapsed * 0.3
-    }
-  })
-
-  return (
-    <group ref={groupRef}>
-      <Sphere args={[1.5, 64, 64]}>
-        <meshStandardMaterial color="yellow" />
-      </Sphere>
-      <Text
-        position={[0, 0, 0.4]}
-        fontSize={0.25}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-      >
-        Welcome
-      </Text>
-    </group>
-  )
-}
-
-function Modal({ project, onClose }: { project: any; onClose: () => void }) {
-  if (!project) return null
-
-  return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
-      onClick={onClose}
-    >
-      <div
-        className="backdrop-blur-md bg-white/10 text-white border border-white/20 p-6 rounded-xl shadow-2xl max-w-sm w-[90%] transition-all"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-2xl font-bold mb-4">{project.title}</h2>
-        <p className="mb-6">{project.description}</p>
-        <button
-          className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-purple-600 hover:to-pink-500 text-white px-4 py-2 rounded-md font-medium shadow-md transition duration-300"
-          onClick={onClose}
-        >
-          Close
+        <button onClick={runCode} style={{
+          padding: '12px 24px',
+          fontSize: 16,
+          cursor: 'pointer',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: 8,
+          transition: '0.3s',
+          marginBottom: 20
+        }}>
+          تشغيل الكود
         </button>
+
+        <div style={{ marginTop: 20 }}>
+          <h3>النتيجة:</h3>
+          <pre style={{
+            backgroundColor: '#263238',
+            color: '#00e676',
+            padding: 15,
+            borderRadius: 8,
+            minHeight: 80
+          }}>
+            {error ? `خطأ: ${error}` : output || 'لم يتم تشغيل الكود بعد'}
+          </pre>
+        </div>
+
+        <div style={{ marginTop: 30 }}>
+          <h2 style={{ color: '#1565c0' }}>اختبار سريع:</h2>
+          <p>{lesson.quiz.question}</p>
+          {lesson.quiz.options.map((opt, idx) => (
+            <div key={idx} style={{ marginBottom: 5 }}>
+              <label>
+                <input
+                  type="radio"
+                  name="quiz"
+                  value={opt}
+                  checked={selectedOption === opt}
+                  onChange={(e) => setSelectedOption(e.target.value)}
+                  style={{ marginRight: 8 }}
+                />
+                {opt}
+              </label>
+            </div>
+          ))}
+          <button onClick={checkAnswer} style={{
+            marginTop: 10,
+            padding: '10px 20px',
+            backgroundColor: '#2196F3',
+            color: 'white',
+            border: 'none',
+            borderRadius: 6,
+            cursor: 'pointer'
+          }}>
+            تحقق من الإجابة
+          </button>
+          {quizResult && <p style={{ marginTop: 10, fontWeight: 'bold' }}>{quizResult}</p>}
+        </div>
       </div>
     </div>
-  )
+  );
 }
-
-export default function Products() {
-  const [selectedProject, setSelectedProject] = useState<any>(null)
-
-  const handleCardClick = (project: any) => {
-    setSelectedProject(project)
-  }
-
-  const closeModal = () => {
-    setSelectedProject(null)
-  }
-
-  return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-800 to-indigo-700 text-white flex flex-col items-center justify-center relative">
-      <BouncingDots />
-      <h1 className="absolute top-6 left-4 z-10 text-2xl sm:text-3xl font-bold">
-        Portfolio
-      </h1>
-
-      <div className="w-full max-w-6xl h-[600px] sm:h-[500px]">
-        <Canvas shadows camera={{ position: [0, 3, 10], fov: 50 }}>
-          <ambientLight intensity={0.3} />
-          <pointLight position={[10, 10, 10]} intensity={1} />
-          <OrbitControls />
-
-          <RotatingSphere />
-          <RotatingCards onCardClick={handleCardClick} />
-        </Canvas>
-      </div>
-
-      <Modal project={selectedProject} onClose={closeModal} />
-
-      <section className="w-full max-w-3xl text-center mt-12 px-4 sm:px-8">
-        <h2 className="text-2xl font-bold mb-4 text-white">About Me</h2>
-        <p className="text-gray-300 mb-2">
-          I'm <strong>Dawod Mohammed</strong>, a frontend developer passionate about building interactive and beautiful user experiences.
-        </p>
-        <p className="text-gray-300 mb-2">
-          I work with modern technologies like <strong>React</strong>, <strong>Next.js</strong>, and <strong>Three.js</strong> to create future-facing websites.
-        </p>
-        <p className="text-gray-300 mb-4">
-          I aim to combine visual creativity with technical skills to build unique and engaging digital products.
-        </p>
-
-        <div className="flex flex-wrap justify-center gap-6 text-orange-400 font-medium mt-4">
-          <a href="mailto:dawodalkhazal2233@gmail.com">Email</a>
-        </div>
-      </section>
-
-      <footer className="mt-10 text-gray-400 text-sm pb-6">
-        &copy; {new Date().getFullYear()} Dawod Mohammed. All rights reserved.
-      </footer>
-    </main>
-  )
-}
-
-

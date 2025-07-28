@@ -1,57 +1,54 @@
-export default function password() {
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (username === 'admin' && password === '1234') {
+      localStorage.setItem('loggedInUser', username);
+      router.push('/dashboard');
+    } else {
+      alert('اسم المستخدم أو كلمة المرور غير صحيحة');
+    }
+  };
+
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>تسجيل الدخول</h2>
+    <div className="min-h-screen flex items-center justify-center bg-blue-50 px-4">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">تسجيل الدخول</h2>
 
-      <input
-        type="text"
-        placeholder="اسم المستخدم"
-        style={styles.input}
-      />
+        <label className="block text-right mb-2 text-sm text-gray-600">اسم المستخدم</label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full border rounded px-3 py-2 mb-4 text-right"
+        />
 
-      <input
-        type="password"
-        placeholder="كلمة المرور"
-        style={styles.input}
-      />
+        <label className="block text-right mb-2 text-sm text-gray-600">كلمة المرور</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border rounded px-3 py-2 mb-6 text-right"
+        />
 
-      <button style={styles.button}>دخول</button>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+        >
+          دخول
+        </button>
+      </form>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: 400,
-    margin: '100px auto',
-    padding: 30,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 10,
-    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-    textAlign: 'center',
-    fontFamily: 'Arial',
-  },
-  title: {
-    marginBottom: 30,
-    color: '#333',
-  },
-  input: {
-    width: '100%',
-    padding: 12,
-    marginBottom: 20,
-    border: '1px solid #ccc',
-    borderRadius: 5,
-    fontSize: 16,
-    direction: 'rtl',
-  },
-  button: {
-    width: '100%',
-    padding: 12,
-    backgroundColor: '#007BFF',
-    color: 'white',
-    border: 'none',
-    borderRadius: 5,
-    fontSize: 16,
-    cursor: 'pointer',
-  },
-};
