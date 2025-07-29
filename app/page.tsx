@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Sphere, Text } from '@react-three/drei'
-import { useRef, useState, RefObject } from 'react'
+import { useRef, useState } from 'react'
 import * as THREE from 'three'
 
 const projects = [
@@ -96,13 +96,18 @@ function ProjectCard({
   )
 }
 
-function RotatingCards({ onCardClick }: { onCardClick: (project: any) => void }) {
+function RotatingCards({
+  onCardClick,
+  isExpanded,
+}: {
+  onCardClick: (project: any) => void
+  isExpanded: boolean
+}) {
   const groupRef = useRef<THREE.Group | null>(null)
 
   useFrame(({ clock }) => {
-    const elapsed = clock.getElapsedTime()
-    if (groupRef.current) {
-      groupRef.current.rotation.y = elapsed * 0.3
+    if (!isExpanded && groupRef.current) {
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.3
     }
   })
 
@@ -112,15 +117,24 @@ function RotatingCards({ onCardClick }: { onCardClick: (project: any) => void })
   return (
     <group ref={groupRef}>
       {projects.map((p, i) => {
-        const angle = i * angleStep
-        const x = Math.cos(angle) * radius
-        const z = Math.sin(angle) * radius
+        let position: [number, number, number]
+
+        if (isExpanded) {
+          // اصطفاف تحت الكرة الصفراء
+          position = [i * 2 - ((projects.length - 1) * 2) / 2, -2.5, 0]
+        } else {
+          // تدوير حول الكرة
+          const angle = i * angleStep
+          const x = Math.cos(angle) * radius
+          const z = Math.sin(angle) * radius
+          position = [x, 0, z]
+        }
 
         return (
           <ProjectCard
             key={p.id}
             project={p}
-            position={[x, 0, z]}
+            position={position}
             onClick={onCardClick}
           />
         )
@@ -129,7 +143,7 @@ function RotatingCards({ onCardClick }: { onCardClick: (project: any) => void })
   )
 }
 
-function RotatingSphere() {
+function RotatingSphere({ onToggle }: { onToggle: () => void }) {
   const groupRef = useRef<THREE.Group | null>(null)
 
   useFrame(({ clock }) => {
@@ -140,7 +154,7 @@ function RotatingSphere() {
   })
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} onClick={onToggle}>
       <Sphere args={[1.5, 64, 64]}>
         <meshStandardMaterial color="yellow" />
       </Sphere>
@@ -184,6 +198,7 @@ function Modal({ project, onClose }: { project: any; onClose: () => void }) {
 
 export default function Products() {
   const [selectedProject, setSelectedProject] = useState<any>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const handleCardClick = (project: any) => {
     setSelectedProject(project)
@@ -191,6 +206,10 @@ export default function Products() {
 
   const closeModal = () => {
     setSelectedProject(null)
+  }
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded)
   }
 
   return (
@@ -206,8 +225,8 @@ export default function Products() {
           <pointLight position={[10, 10, 10]} intensity={1} />
           <OrbitControls />
 
-          <RotatingSphere />
-          <RotatingCards onCardClick={handleCardClick} />
+          <RotatingSphere onToggle={toggleExpanded} />
+          <RotatingCards onCardClick={handleCardClick} isExpanded={isExpanded} />
         </Canvas>
       </div>
 
@@ -236,5 +255,3 @@ export default function Products() {
     </main>
   )
 }
-
-
